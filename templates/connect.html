@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>
+        AI Cloud Cost Detective
+    </title>
+
+    <link rel="icon"
+          href="{{ url_for('static', filename='images/favicon.png') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+    <img
+    src="{{ url_for('static', filename='images/logo.png') }}"
+    class="login-logo"
+    alt="AI Cloud Cost Detective">
+
+
+
+    <h1>
+        AI Cloud Cost Detective
+    </h1>
+
+
+
+    <p class="subtitle">
+
+        Optimize AWS Costs with AI-powered insights
+
+    </p>
+
+
+
+
+    <form action="/connect" method="POST">
+
+
+
+        <input
+
+            type="text"
+
+            name="access_key"
+
+            placeholder="Access Key ID"
+
+            required>
+
+
+
+        <input
+
+            type="password"
+
+            name="secret_key"
+
+            placeholder="Secret Access Key"
+
+            required>
+
+
+
+
+        <input
+
+            type="text"
+
+            name="region"
+
+            placeholder="AWS Region (example: us-east-1)"
+
+            required>
+
+
+
+        <button type="submit">
+
+            Analyze AWS Account
+
+        </button>
+
+
+
+    </form>
+
+
+
+
+    <p class="security-note">
+
+        🔒 Secure connection to your AWS account
+
+    </p>
+
+
+
+</div>
+
+
+
+</body>
+
+</html>

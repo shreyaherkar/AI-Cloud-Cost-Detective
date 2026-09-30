@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI Cloud Cost Detective</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<aside class="sidebar">
+
+<div class="logo">
+
+    <img
+    src="{{ url_for('static', filename='images/logo.png') }}"
+    class="sidebar-logo"
+    alt="AI Cloud Cost Detective">
+
+
+    <div>
+
+        <h2>
+            AI Cloud
+        </h2>
+
+        <span>
+            Cost Detective
+        </span>
+
+    </div>
+
+</div>
+    <nav>
+
+        <a class="active" href="#">
+            📊 Dashboard
+        </a>
+
+        <a href="#">
+            💰 Cost Analysis
+        </a>
+
+        <a href="#">
+            ☁ AWS Resources
+        </a>
+
+        <a href="#">
+            🤖 AI Insights
+        </a>
+
+        <a href="#">
+            📈 Reports
+        </a>
+
+    </nav>
+
+</aside>
+
+<div class="main-content">
+
+<header class="topbar">
+
+    <div>
+
+        <h1>AI Cloud Cost Detective</h1>
+
+        <p>
+            Intelligent AWS FinOps Dashboard
+        </p>
+
+    </div>
+    
+    <div class="user-box">
+
+        <span>Developer</span>
+
+        <h3>Jai Bardiya</h3>
+
+    </div>
+
+</header>
+
+<section class="stats-grid">
+
+    <div class="stat-card">
+
+        <h4>Total Monthly Cost</h4>
+
+        <h2>${{ cost_data.total_cost }}</h2>
+
+        <p>Current AWS Spend</p>
+
+    </div>
+
+    <div class="stat-card">
+
+        <h4>Running EC2</h4>
+
+        <h2>{{ resources.ec2_running }}</h2>
+
+        <p>Active Instances</p>
+
+    </div>
+
+    <div class="stat-card">
+
+        <h4>Stopped EC2</h4>
+
+        <h2>{{ resources.ec2_stopped }}</h2>
+
+        <p>Potential Savings</p>
+
+    </div>
+
+    <div class="stat-card">
+
+        <h4>S3 Buckets</h4>
+
+        <h2>{{ resources.s3_buckets }}</h2>
+
+        <p>Storage Services</p>
+
+    </div>
+
+    <div class="stat-card">
+
+        <h4>RDS Instances</h4>
+
+        <h2>{{ resources.rds_instances }}</h2>
+
+        <p>Database Resources</p>
+
+    </div>
+
+    <div class="stat-card">
+
+        <h4>Unused EBS</h4>
+
+        <h2>{{ resources.unused_ebs }}</h2>
+
+        <p>Optimization Opportunity</p>
+
+    </div>
+
+</section>
+
+<section class="budget-card">
+
+    <div class="budget-header">
+
+        <h2>💰 Budget Monitoring</h2>
+
+        <span class="budget-status {{ budget.color }}">
+            {{ budget.status }}
+        </span>
+
+    </div>
+
+    <div class="budget-grid">
+
+        <div>
+
+            <h4>Monthly Budget</h4>
+
+            <h2>${{ budget.budget }}</h2>
+
+        </div>
+
+        <div>
+
+            <h4>Current Spend</h4>
+
+            <h2>${{ budget.spent }}</h2>
+
+        </div>
+
+        <div>
+
+            <h4>Remaining Budget</h4>
+
+            <h2>${{ budget.remaining }}</h2>
+
+        </div>
+
+    </div>
+
+    <div class="progress-container">
+
+        <div class="progress-bar">
+
+            <div
+                class="progress-fill {{ budget.color }}"
+                style="width: {{ budget.used_percent }}%;">
+
+            </div>
+
+        </div>
+
+        <p>
+
+            {{ budget.used_percent }}% of monthly budget used
+
+        </p>
+
+    </div>
+
+</section>
+
+<section class="content-grid">
+
+    <div class="chart-card">
+
+        <h2>📊 AWS Cost Distribution</h2>
+ <div class="chart-container">
+
+        <canvas id="costChart"></canvas>
+</div>
+
+    </div>
+
+    <div class="summary-card">
+
+        <h2>AWS Resource Summary</h2>
+
+        <table class="resource-table">
+
+            <tr>
+                <td>Running EC2</td>
+                <td>{{ resources.ec2_running }}</td>
+            </tr>
+
+            <tr>
+                <td>Stopped EC2</td>
+                <td>{{ resources.ec2_stopped }}</td>
+            </tr>
+
+            <tr>
+                <td>S3 Buckets</td>
+                <td>{{ resources.s3_buckets }}</td>
+            </tr>
+
+            <tr>
+                <td>RDS Instances</td>
+                <td>{{ resources.rds_instances }}</td>
+            </tr>
+
+            <tr>
+                <td>Unused EBS</td>
+                <td>{{ resources.unused_ebs }}</td>
+            </tr>
+
+            <tr>
+                <td>Total Monthly Cost</td>
+                <td>${{ cost_data.total_cost }}</td>
+            </tr>
+
+            <tr>
+                <td>Budget Used</td>
+                <td>{{ budget.used_percent }}%</td>
+            </tr>
+
+            <tr>
+                <td>Budget Status</td>
+                <td>{{ budget.status }}</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+</section>
+
+<section class="ai-section">
+
+    <div class="section-title">
+
+        <h2>🤖 AI Cost Optimization</h2>
+
+        <p>Powered by Groq Llama 3.3</p>
+
+    </div>
+
+    {% if ai_recommendations.error %}
+
+    <div class="error-box">
+
+        <p>{{ ai_recommendations.error }}</p>
+
+    </div>
+
+    {% else %}
+
+    <div class="recommendation-grid">
+
+        <div class="recommendation-card">
+
+            <h3>💰 Monthly Cost</h3>
+
+            <h1>{{ ai_recommendations.monthly_cost }}</h1>
+
+        </div>
+
+        <div class="recommendation-card">
+
+            <h3>🔥 Highest Cost Service</h3>
+
+            <h1>{{ ai_recommendations.highest_cost_service }}</h1>
+
+        </div>
+
+        <div class="recommendation-card">
+
+            <h3>💵 Estimated Savings</h3>
+
+            <h1>{{ ai_recommendations.estimated_savings }}</h1>
+
+        </div>
+
+        <div class="recommendation-card">
+
+            <h3>⚠ Risk Level</h3>
+
+            <h1>{{ ai_recommendations.risk_level }}</h1>
+
+        </div>
+
+        <div class="recommendation-card">
+
+            <h3>🎯 Optimization Score</h3>
+
+            <h1>{{ ai_recommendations.optimization_score }}/100</h1>
+
+        </div>
+
+    </div>
+
+    <div class="recommendation-list">
+
+        <h3>Recommended Actions</h3>
+
+        <ul>
+
+            {% for item in ai_recommendations.recommendations %}
+
+            <li>{{ item }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+    {% endif %}
+
+</section>
+
+<section class="summary-section">
+
+    <div class="summary-header">
+
+        <h2>🤖 AI Executive Summary</h2>
+
+        <p>
+            AI-generated analysis of your current AWS environment.
+        </p>
+
+    </div>
+
+    <div class="summary-content">
+
+        <pre>{{ ai_summary }}</pre>
+
+    </div>
+
+</section>
+
+<section class="chat-section">
+
+    <div class="chat-header">
+
+        <h2>💬 AI Cloud Assistant</h2>
+
+        <p>
+
+            Ask anything about AWS, DevOps, Docker, Kubernetes,
+            Terraform, Linux, Security or your current AWS account.
+
+        </p>
+
+    </div>
+
+    <div
+        id="chatMessages"
+        class="chat-messages">
+
+        <div class="bot-message">
+
+            <strong>AI Assistant</strong>
+
+            <br><br>
+
+            Hello 👋
+
+            <br><br>
+
+            I can help you with:
+
+            <ul>
+
+                <li>AWS Cost Optimization</li>
+
+                <li>EC2 Analysis</li>
+
+                <li>S3 Best Practices</li>
+
+                <li>RDS Optimization</li>
+
+                <li>Docker & Kubernetes</li>
+
+                <li>Terraform</li>
+
+                <li>DevOps</li>
+
+                <li>Cloud Architecture</li>
+
+                <li>Budget Monitoring</li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    <div class="chat-input">
+
+        <input
+            id="userQuestion"
+            type="text"
+            placeholder="Ask anything about your AWS account...">
+
+        <button id="sendBtn">
+
+            Send
+
+        </button>
+
+    </div>
+
+</section>
+
+<footer class="footer">
+
+    <p>
+
+        <strong>AI Cloud Cost Detective</strong>
+
+    </p>
+
+    <p>
+
+        AI-Powered AWS FinOps Dashboard
+
+    </p>
+
+    <p>
+
+        Flask • AWS SDK • Groq AI • Chart.js • Docker
+
+    </p>
+
+    <p>
+
+        Developed by Jai Bardiya
+
+    </p>
+
+</footer>
+
+</div>
+
+</div>
+
+<script>
+
+const labels = [
+
+{% for service in cost_data.services %}
+
+"{{ service.service }}",
+
+{% endfor %}
+
+];
+
+const values = [
+
+{% for service in cost_data.services %}
+
+{{ service.cost }},
+
+{% endfor %}
+
+];
+
+if (values.length > 0) {
+    new Chart(
+        document.getElementById("costChart"),
+        {
+            type: "doughnut",
+
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "AWS Cost",
+                    data: values,
+                    borderWidth: 2
+                }]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+
+                plugins: {
+                    legend: {
+                        position: "bottom",
+                        labels: {
+                            boxWidth: 15,
+                            padding: 10,
+                            font: {
+                                size: 11
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    );
+}
+
+</script>
+
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
+</body>
+
+</html>
+
